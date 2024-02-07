@@ -10,14 +10,14 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { x: 0, y: 0 },
+      gravity: { y: 0 },
       debug: false,
     },
   },
   parent: 'game-container',
   scene: [Preloader, Game],
-	pixelArt: true,
-	roundPixels: true
+  pixelArt: true,
+  roundPixels: true,
 };
 
 export default new Phaser.Game(config);
