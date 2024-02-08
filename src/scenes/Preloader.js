@@ -12,13 +12,12 @@ export class Preloader extends Scene {
     this.load.setPath('assets');
 
     // Chargement des images pour les tuiles de la carte
-    this.load.image('grass', 'tiles/grass.png');
-    this.load.image('plant', 'tiles/plant.png');
-    this.load.image('props', 'tiles/props.png');
-    this.load.image('wall', 'tiles/wall.png');
+    this.load.image('decorative', 'tileset/decorative.png');
+    this.load.image('mainlevbuild', 'tileset/mainlevbuild.png');
+    this.load.image('torches', 'tileset/decorative.png');
 
     // Chargement des données de la carte
-    this.load.tilemapTiledJSON('survivor', 'tiles/o-survivor.json');
+    this.load.tilemapTiledJSON('catacombs', 'tileset/catacombs_map.json');
 
     // Chargement des sprite pour le raider
     this.load.spritesheet('raiderWalk', 'characters/raider/Walk.png', {
@@ -51,6 +50,17 @@ export class Preloader extends Scene {
     this.load.spritesheet('zombieWalk', 'enemies/zombie/Walk.png', {
       frameWidth: 96,
       frameHeight: 96,
+    });
+
+    this.load.spritesheet('zombieDead', 'enemies/zombie/Dead.png', {
+      frameWidth: 96,
+      frameHeight: 96,
+    });
+
+    // Chargement du sprite de projectile
+    this.load.spritesheet('projectile', 'weapons/Charge_2.png', {
+      frameWidth: 64,
+      frameHeight: 128,
     });
   }
 

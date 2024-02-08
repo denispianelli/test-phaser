@@ -4,10 +4,13 @@ export class Wizard extends PlayableCharacter {
   constructor(scene, x, y, texture, speed) {
     super(scene, x, y, texture);
 
-    this.speed = speed;
+    this.speed = 100;
     this.health = 100;
     this.tintTimer = null; // Variable pour stocker le timer pour la teinte temporaire
     this.deadAnimationPlayed = false; // Flag to track if the "dead" animation has been played
+		this.attack = 25;
+		this.lastAttackTime = 0;
+		this.attackCooldown = 1000;
   }
 
   // Define a damage method

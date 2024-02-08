@@ -6,87 +6,91 @@ export class PlayableCharacter extends Phaser.Physics.Arcade.Sprite {
 
     this.setOrigin(0.44, 0.44);
     this.setPushable(false);
-    this.body.setSize(this.width * 0.1, this.height * 0.2);
-    this.body.setOffset(50, 85); // Default body offset
+    this.body.setSize(this.width * 0.1, this.height * 0.4);
+    this.body.setOffset(50, 80); // Default body offset
     this.cursors = scene.input.keyboard.createCursorKeys();
   }
 
   update() {
-    const speed = 100;
+    const speed = this.speed;
     let velocityX = 0;
     let velocityY = 0;
 
-    if (
-      this.cursors.left.isDown ||
-      this.scene.input.keyboard.addKey('A').isDown
-    ) {
-      velocityX = -speed; // Move left
-      this.scaleX = -1; // Flip sprite horizontally
-      this.body.offset.x = 65;
-    }
-    if (
-      this.cursors.right.isDown ||
-      this.scene.input.keyboard.addKey('D').isDown
-    ) {
-      velocityX = speed; // Move right
-      this.scaleX = 1; // Reset sprite flip
-      this.body.offset.x = 50;
-    }
-    if (
-      this.cursors.up.isDown ||
-      this.scene.input.keyboard.addKey('W').isDown
-    ) {
-      velocityY = -speed; // Move up
-    }
-    if (
-      this.cursors.down.isDown ||
-      this.scene.input.keyboard.addKey('S').isDown
-    ) {
-      velocityY = speed; // Move down
-    }
+		if (this.health > 0) {
+			if (
+				this.cursors.left.isDown ||
+				this.scene.input.keyboard.addKey('A').isDown
+			) {
+				velocityX = -speed; // Move left
+				this.scaleX = -1; // Flip sprite horizontally
+				this.body.offset.x = 65;
+			}
+			if (
+				this.cursors.right.isDown ||
+				this.scene.input.keyboard.addKey('D').isDown
+			) {
+				velocityX = speed; // Move right
+				this.scaleX = 1; // Reset sprite flip
+				this.body.offset.x = 50;
+			}
+			if (
+				this.cursors.up.isDown ||
+				this.scene.input.keyboard.addKey('W').isDown
+			) {
+				velocityY = -speed; // Move up
+			}
+			if (
+				this.cursors.down.isDown ||
+				this.scene.input.keyboard.addKey('S').isDown
+			) {
+				velocityY = speed; // Move down
+			}
+	
+			// Handle diagonal movement
+			if (
+				(this.cursors.left.isDown ||
+					this.scene.input.keyboard.addKey('A').isDown) &&
+				(this.cursors.up.isDown || this.scene.input.keyboard.addKey('W').isDown)
+			) {
+				velocityX *= Math.cos(Math.PI / 4);
+				velocityY *= Math.sin(Math.PI / 4);
+			}
+			if (
+				(this.cursors.right.isDown ||
+					this.scene.input.keyboard.addKey('D').isDown) &&
+				(this.cursors.up.isDown || this.scene.input.keyboard.addKey('W').isDown)
+			) {
+				velocityX *= Math.cos(Math.PI / 4);
+				velocityY *= Math.sin(Math.PI / 4);
+			}
+			if (
+				(this.cursors.left.isDown ||
+					this.scene.input.keyboard.addKey('A').isDown) &&
+				(this.cursors.down.isDown || this.scene.input.keyboard.addKey('S').isDown)
+			) {
+				velocityX *= Math.cos(Math.PI / 4);
+				velocityY *= Math.sin(Math.PI / 4);
+			}
+			if (
+				(this.cursors.right.isDown ||
+					this.scene.input.keyboard.addKey('D').isDown) &&
+				(this.cursors.down.isDown || this.scene.input.keyboard.addKey('S').isDown)
+			) {
+				velocityX *= Math.cos(Math.PI / 4);
+				velocityY *= Math.sin(Math.PI / 4);
+			}
+	
+			// Apply velocity
+			this.setVelocity(velocityX, velocityY);
+	
+			// Play animation
+			if (velocityX !== 0 || velocityY !== 0) {
+				this.anims.play('walk-side', true);
+			} else if (this.health > 0) {
+				this.anims.play('idle', true);
+			}
+		}
 
-    // Handle diagonal movement
-    if (
-      (this.cursors.left.isDown ||
-        this.scene.input.keyboard.addKey('A').isDown) &&
-      (this.cursors.up.isDown || this.scene.input.keyboard.addKey('W').isDown)
-    ) {
-      velocityX *= Math.cos(Math.PI / 4);
-      velocityY *= Math.sin(Math.PI / 4);
-    }
-    if (
-      (this.cursors.right.isDown ||
-        this.scene.input.keyboard.addKey('D').isDown) &&
-      (this.cursors.up.isDown || this.scene.input.keyboard.addKey('W').isDown)
-    ) {
-      velocityX *= Math.cos(Math.PI / 4);
-      velocityY *= Math.sin(Math.PI / 4);
-    }
-    if (
-      (this.cursors.left.isDown ||
-        this.scene.input.keyboard.addKey('A').isDown) &&
-      (this.cursors.down.isDown || this.scene.input.keyboard.addKey('S').isDown)
-    ) {
-      velocityX *= Math.cos(Math.PI / 4);
-      velocityY *= Math.sin(Math.PI / 4);
-    }
-    if (
-      (this.cursors.right.isDown ||
-        this.scene.input.keyboard.addKey('D').isDown) &&
-      (this.cursors.down.isDown || this.scene.input.keyboard.addKey('S').isDown)
-    ) {
-      velocityX *= Math.cos(Math.PI / 4);
-      velocityY *= Math.sin(Math.PI / 4);
-    }
-
-    // Apply velocity
-    this.setVelocity(velocityX, velocityY);
-
-    // Play animation
-    if ((velocityX !== 0 || velocityY !== 0) && this.health > 0 ) {
-      this.anims.play('walk-side', true);
-    } else if (this.health > 0) {
-      this.anims.play('idle', true);
-    }
+   
   }
 }
